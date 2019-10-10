@@ -103,7 +103,7 @@ namespace raspicam {
         case cv::CAP_PROP_FRAME_HEIGHT :
             return _impl->getHeight();
         case cv::CAP_PROP_FPS:
-            return 30;
+            return _impl->getFrameRate();
         case cv::CAP_PROP_FORMAT :
             return imgFormat;
         case cv::CAP_PROP_MODE :
@@ -215,6 +215,14 @@ namespace raspicam {
             else  {
                 _impl->setAWB(raspicam::RASPICAM_AWB_AUTO);
             };
+        break;
+
+        case cv::CAP_PROP_FPS :
+            if ( value>0 && value <=90 ) {
+                _impl->setFrameRate(value);
+            }else{
+                return false;
+            }
         break;
 
 //     case cv::CAP_PROP_WHITE_BALANCE :return _cam_impl->getAWB();

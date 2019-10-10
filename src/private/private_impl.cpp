@@ -386,7 +386,13 @@ namespace raspicam {
                 cout << __func__ << ": Failed to set shutter parameter.\n";
         }
 
-
+        void Private_Impl::commitFramerate(){
+            //if ( mmal_port_parameter_set_uint32 ( *State.camera_component->output, MMAL_PARAMETER_VIDEO_FRAME_RATE, State.framerate  ) !=  MMAL_SUCCESS )
+            if ( mmal_port_parameter_set_rational ( State.camera_component->output[MMAL_CAMERA_VIDEO_PORT], MMAL_PARAMETER_VIDEO_FRAME_RATE, (MMAL_RATIONAL_T ) {
+            State.framerate*256, 256
+            }  ) !=  MMAL_SUCCESS )
+                cout << __func__ << ": Failed to set frame rate parameter.\n";
+        }
 
         void Private_Impl::commitContrast() {
             if ( mmal_port_parameter_set_rational ( State.camera_component->control, MMAL_PARAMETER_CONTRAST, ( MMAL_RATIONAL_T ) {
@@ -470,7 +476,7 @@ namespace raspicam {
                 commitShutterSpeed();
                 State.rpc_exposureMode=RASPICAM_EXPOSURE_FIXEDFPS;
                 commitExposure();
-            } else           commitExposure();
+            } else { commitExposure(); }
             commitExposureCompensation();
             commitMetering();
             commitImageEffect();
@@ -642,6 +648,11 @@ namespace raspicam {
             if ( isOpened() ) commitExposureCompensation();
         }
 
+        void Private_Impl::setFrameRate ( unsigned int frame_rate ) {
+            State.framerate = frame_rate;
+            if ( isOpened() ) commitFramerate();
+        }
+
         void Private_Impl::setHorizontalFlip ( bool hFlip ) {
             State.hflip = hFlip;
             if ( isOpened() ) commitFlips();
@@ -773,10 +784,6 @@ namespace raspicam {
             default:
                 return MMAL_PARAM_IMAGEFX_NONE;
             }
-        }
-
-        void Private_Impl::setFrameRate ( unsigned int frame_rate ) {
-            State.framerate = frame_rate;
         }
 
         int Private_Impl::convertFormat ( RASPICAM_FORMAT fmt ) {

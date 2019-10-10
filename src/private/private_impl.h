@@ -263,6 +263,7 @@ namespace raspicam {
             void commitVideoStabilization();
             void commitShutterSpeed();
             void commitAWB_RB();
+            void commitFramerate();
 
             MMAL_PARAM_EXPOSUREMODE_T convertExposure ( RASPICAM_EXPOSURE exposure ) ;
             MMAL_PARAM_AWBMODE_T  convertAWB ( RASPICAM_AWB awb ) ;
