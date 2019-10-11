@@ -142,7 +142,7 @@ namespace raspicam {
             void setExposureCompensation ( int val ); //-10,10
             void setAWB ( RASPICAM_AWB awb );
             void setAWB_RB ( float red,float blue );//ranges [0,1]
-            void setFrameRate ( unsigned int frame_rate ) ;
+            void setFrameRate ( float frame_rate ) ;
 
             void setImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect );
             void setMetering ( RASPICAM_METERING metering );
@@ -192,7 +192,7 @@ namespace raspicam {
             {
                 return State.shutterSpeed;
             }
-            unsigned int getFrameRate() const
+            float getFrameRate() const
             {
              return State.framerate;
             }

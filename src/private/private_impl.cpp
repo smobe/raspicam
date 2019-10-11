@@ -389,7 +389,7 @@ namespace raspicam {
         void Private_Impl::commitFramerate(){
             //if ( mmal_port_parameter_set_uint32 ( *State.camera_component->output, MMAL_PARAMETER_VIDEO_FRAME_RATE, State.framerate  ) !=  MMAL_SUCCESS )
             if ( mmal_port_parameter_set_rational ( State.camera_component->output[MMAL_CAMERA_VIDEO_PORT], MMAL_PARAMETER_VIDEO_FRAME_RATE, (MMAL_RATIONAL_T ) {
-            State.framerate*256, 256
+            (int)(State.framerate*256), 256
             }  ) !=  MMAL_SUCCESS )
                 cout << __func__ << ": Failed to set frame rate parameter.\n";
         }
@@ -648,7 +648,7 @@ namespace raspicam {
             if ( isOpened() ) commitExposureCompensation();
         }
 
-        void Private_Impl::setFrameRate ( unsigned int frame_rate ) {
+        void Private_Impl::setFrameRate ( float frame_rate ) {
             State.framerate = frame_rate;
             if ( isOpened() ) commitFramerate();
         }
